@@ -1,0 +1,34 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environment
+venv/
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# Log files
+*.log
+
+# Output / model results
+*.h5ad
+*.png
+*.pt
+*.pkl
+*.csv
+*.txt
+
+# Result folders
+results/
+logs/
+checkpoints/
+
+# IDE / Editor files
+.vscode/
+.idea/
+.DS_Store
+
+
+scLightGAT.egg-info/
