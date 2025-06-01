@@ -1,36 +1,43 @@
+# 修改 pipeline.py
+# 路徑: scLightGAT/pipeline.py
+
 import argparse
 import os
 import scanpy as sc
 import torch
 from scLightGAT.logger_config import setup_logger
-from scLightGAT.training.model_manager import ModelManager
+from scLightGAT.training.model_manager import CellTypeAnnotator 
 from scLightGAT.visualization.visualization import plot_umap_by_label
 
 logger = setup_logger(__name__)
 
-def train_pipeline(train_path: str, test_path: str, output_path: str, model_dir: str, train_dvae: bool, use_gat: bool, dvae_epochs: int, gat_epochs: int):
+def train_pipeline(train_path: str, test_path: str, output_path: str, model_dir: str, train_dvae: bool, use_gat: bool, dvae_epochs: int, gat_epochs: int, hierarchical: bool = False):
     logger.info("[TRAIN MODE] Starting training pipeline")
     logger.info(f"Train data: {train_path}")
     logger.info(f"Test data: {test_path}")
     logger.info(f"Output dir: {output_path}")
     logger.info(f"Model save dir: {model_dir}")
     logger.info(f"Train DVAE: {train_dvae}, Use GAT: {use_gat}, DVAE Epochs: {dvae_epochs}, GAT Epochs: {gat_epochs}")
+    logger.info(f"Hierarchical mode: {hierarchical}")
 
     adata_train = sc.read_h5ad(train_path)
     adata_test = sc.read_h5ad(test_path)
-    model_manager = ModelManager()
+    adata_train.raw = adata_train.copy()
+    adata_test.raw = adata_test.copy()
+    
+    
+    annotator = CellTypeAnnotator(
+        use_dvae=train_dvae,
+        use_hvg=True,
+        hierarchical=hierarchical,
+        dvae_params={'epochs': dvae_epochs},
+        gat_epochs=gat_epochs
+    )
 
-    # Set custom training parameters
-    model_manager.dvae_params['epochs'] = dvae_epochs
-    model_manager.gat_epochs = gat_epochs  # Custom attribute for GAT
-
-    adata_result, dvae_losses, gat_losses = model_manager.run_pipeline(
+    adata_result, dvae_losses, gat_losses = annotator.run_pipeline(
         adata_train=adata_train,
         adata_test=adata_test,
-        use_dvae=train_dvae,
-        dvae_epochs=dvae_epochs,
-        save_visualizations=True,
-        gat_epochs=gat_epochs
+        save_visualizations=True
     )
 
     adata_result.write(os.path.join(output_path, "adata_with_predictions.h5ad"))
@@ -38,42 +45,21 @@ def train_pipeline(train_path: str, test_path: str, output_path: str, model_dir:
 
 def predict_pipeline(train_path: str, test_path: str, output_path: str, model_dir: str):
     logger.info("[PREDICT MODE] Running inference pipeline")
-    logger.info(f"Train data: {train_path}")
     logger.info(f"Test data: {test_path}")
     logger.info(f"Using models from: {model_dir}")
 
     adata_test = sc.read_h5ad(test_path)
-    model_manager = ModelManager()
+    
+    
+    annotator = CellTypeAnnotator()
 
-    adata_result = model_manager.run_inference(
+    adata_result = annotator.run_inference(
         adata_test=adata_test,
         model_dir=model_dir
     )
 
     adata_result.write(os.path.join(output_path, "adata_predicted.h5ad"))
     logger.info("[PREDICT MODE] Prediction pipeline completed")
-
-def visualize_pipeline(input_path: str, output_path: str):
-    logger.info("[VISUALIZE MODE] Generating UMAP and cluster plots")
-    logger.info(f"Input: {input_path}")
-    logger.info(f"Save to: {output_path}")
-
-    adata = sc.read_h5ad(input_path)
-
-    if 'X_umap' not in adata.obsm:
-        logger.info("UMAP coordinates not found. Running dimensionality reduction...")
-        sc.pp.neighbors(adata)
-        sc.tl.umap(adata)
-
-    os.makedirs(output_path, exist_ok=True)
-
-    if 'Celltype_training' in adata.obs:
-        plot_umap_by_label(adata, label='Celltype_training', save_path=os.path.join(output_path, 'umap_Cell_type.png'))
-
-    if 'scLightGAT_annotation' in adata.obs:
-        plot_umap_by_label(adata, label='scLightGAT_annotation', save_path=os.path.join(output_path, 'umap_scLightGAT_annotation.png'))
-
-    logger.info("UMAP plots saved.")
 
 def main():
     parser = argparse.ArgumentParser(description="scLightGAT: Cell Type Annotation Pipeline")
@@ -86,6 +72,7 @@ def main():
     parser.add_argument('--use_gat', action='store_true', help='Flag to enable GAT refinement after LightGBM')
     parser.add_argument('--dvae_epochs', type=int, default=15, help='Number of epochs for DVAE training')
     parser.add_argument('--gat_epochs', type=int, default=300, help='Number of epochs for GAT training')
+    parser.add_argument('--hierarchical', action='store_true', help='Enable hierarchical classification')
 
     args = parser.parse_args()
 
@@ -93,7 +80,9 @@ def main():
     os.makedirs(args.model_dir, exist_ok=True)
 
     if args.mode == 'train':
-        train_pipeline(args.train, args.test, args.output, args.model_dir, args.train_dvae, args.use_gat, args.dvae_epochs, args.gat_epochs)
+        train_pipeline(args.train, args.test, args.output, args.model_dir, 
+                       args.train_dvae, args.use_gat, args.dvae_epochs, args.gat_epochs,
+                       args.hierarchical)
     elif args.mode == 'predict':
         predict_pipeline(args.train, args.test, args.output, args.model_dir)
     elif args.mode == 'visualize':

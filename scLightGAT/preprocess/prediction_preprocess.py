@@ -171,34 +171,56 @@ def balance_classes(X, y, target_count=10000):
     logger.info(f"🔧Resampled class counts:\n{pd.Series(y_resampled).value_counts()}")
     return X_resampled, y_resampled
 
-def prepare_data(adata_train, adata_test, balanced_counts=10000, batch_size=32, celltype_col=None):
+def prepare_data(adata_train, adata_test, balanced_counts=10000, batch_size=128, celltype_col=None):
+    """
+    Optimized data preparation function with improved memory management.
+    """
     logger.info("💾Preparing data for all models")
     
-    for adata in [adata_train, adata_test]:
-        if "log_transformed" not in adata.layers:
-            adata.layers["log_transformed"] = np.log1p(adata.X)
-
     
-    # Prepare DGE and HVG data
+    for adata in [adata_train, adata_test]:
+        if adata.raw is None:
+            adata.raw = adata.copy()
+        if "log_transformed" not in adata.layers:
+            if isinstance(adata.X, np.ndarray) and adata.X.size > 1e8:
+                logger.info("Processing large matrix in chunks")
+                chunk_size = 10000
+                log_matrix = np.zeros_like(adata.X)
+                for i in range(0, adata.shape[0], chunk_size):
+                    end_idx = min(i + chunk_size, adata.shape[0])
+                    log_matrix[i:end_idx] = np.log1p(adata.X[i:end_idx])
+                
+                adata.layers["log_transformed"] = log_matrix
+            else:
+                adata.layers["log_transformed"] = np.log1p(adata.X)
+    
+    
     adata_train_dge, adata_test_dge, common_hvgs = prepare_data_for_prediction(adata_train, adata_test, celltype_col)
     adata_train_hvg, adata_test_hvg = prepare_hvg_data(adata_train, adata_test, celltype_col)
+    
     
     for adata in [adata_train_dge, adata_test_dge, adata_train_hvg, adata_test_hvg]:
         if "log_transformed" not in adata.layers:
             adata.layers["log_transformed"] = np.log1p(adata.X)
     
-    # Prepare data for LightGBM (using DGE data)
+    
     X_train, y_train, encoder_lightgbm = prepare_lightgbm_data(adata_train_dge, celltype_col)
     
-    # Prepare data for DVAE (using HVG data)
+    
     X_hvg, y_hvg, input_dim, dataloader, encoder_dvae = prepare_dvae_data(adata_train_hvg, batch_size, celltype_col)
     
-    # Use the same resampling for both LightGBM and DVAE
+    
     X_train_balanced, y_train_balanced = balance_classes(X_train, y_train, balanced_counts)
     
-    # Create a new dataloader with balanced data for DVAE
-    balanced_dataset = TensorDataset(torch.tensor(X_hvg.values, dtype=torch.float32))
-    balanced_dataloader = DataLoader(balanced_dataset, batch_size=batch_size, shuffle=True)
+    
+    tensor_dataset = TensorDataset(torch.tensor(X_hvg.values, dtype=torch.float32))
+    balanced_dataloader = DataLoader(
+        tensor_dataset, 
+        batch_size=batch_size, 
+        shuffle=True,
+        pin_memory=True, 
+        num_workers=4   
+    )
     
     return {
         'lightgbm': (X_train_balanced, y_train_balanced, encoder_lightgbm),
