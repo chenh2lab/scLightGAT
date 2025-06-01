@@ -30,10 +30,10 @@ pip install -e .
 <div align="center">
   <img src="docs/figures/overall.png" alt="Overall Pipeline" width="80%"/>
   <br/>
-  <small>**Figure:</small> Overview of the scLightGAT framework.  
+  <small>**Figure:</small> Overview of the scLightGAT framework.**  
   <small>(a) C-DVAE compresses HVGs and DGE markers into a fused feature matrix.</small>  
   <small>(b) LightGBM performs initial cell-type estimation.</small>  
-  <small>(c) A two-layer GAT refines predictions on the single-cell graph (SCG).**</small>
+  <small>(c) A two-layer GAT refines predictions on the single-cell graph (SCG).</small>
 </div>
 
 
