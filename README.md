@@ -28,7 +28,7 @@ pip install -e .
 
 
 <div align="center">
-  <img src="docs/figures/overall_pipeline.png" alt="Overall Pipeline" width="80%"/>
+  <img src="docs/figures/overall.png" alt="Overall Pipeline" width="80%"/>
   <br/>
   <small>**Figure:</small> Overview of the scLightGAT framework.  
   <small>(a) C-DVAE compresses HVGs and DGE markers into a fused feature matrix.</small>  
