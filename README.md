@@ -26,17 +26,18 @@ pip install -e .
 ## Pipeline Overview
 
 
-
-<div align="center">
-  <img src="docs/figures/overall.png" alt="Overall Pipeline" width="80%"/>
-  <br/>
-  <small>Figure: Overview of the scLightGAT framework. </small>
-  <small>(a) C-DVAE compresses HVGs and DGE markers into a fused feature matrix.</small>  
-  <small>(b) LightGBM performs initial cell-type estimation.</small>  
-  <small>(c) A two-layer GAT refines predictions on the single-cell graph (SCG).</small>
-</div>
-
-
+<figure align="center">
+  <img src="docs/figures/overall.png" alt="Pipeline Overview" width="80%"/>
+  <figcaption>
+    <strong>Figure 1.</strong> <strong>Overview of the scLightGAT framework.</strong>
+    <br/>
+    <strong>(a)</strong> *Feature compression* via C-DVAE: HVGs (M<sub>HVGs</sub>) are encoded into a low-dimensional latent space Z and concatenated with DGE markers (M<sub>DGE</sub>) to form fused features F.  
+    <br/>
+    <strong>(b)</strong> *Initial cell-type estimation* with LightGBM on F, producing per-cell logits and class predictions ŷ<sub>LGBM</sub>.  
+    <br/>
+    <strong>(c)</strong> *Prediction refinement* via a two-layer GAT on the single-cell graph (SCG), integrating Harmony embeddings, UMAP coordinates, and Leiden labels to yield the final labels ŷ<sub>GAT</sub>.
+  </figcaption>
+</figure>
 ---
 
 ## Quick Start
