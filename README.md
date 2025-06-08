@@ -13,7 +13,7 @@ Designed for high-quality, well-preprocessed datasets, scLightGAT achieves accur
 ## Installation
 
 ```bash
-git clone https://github.com/your-username/scLightGAT.git
+git clone https://github.com/chenh2lab/scLightGAT.git
 cd scLightGAT
 pip install -r requirements.txt
 pip install -e .
