@@ -85,6 +85,15 @@ After training, the results folder will contain:
 - UMAP plots and confusion matrices (if enabled)
 
 ---
+## Experimental Results
+
+- [Cross-validation ground truth](exp_results/Cross_validation(PanlaoDB)_groundtruth/)
+- [Existing methods comparisons](exp_results/Existing_methods_comparisons/)
+- [Harmony‐corrected UMAPs](exp_results/Harmony_corrected_umap/)
+- [Doublets information](exp_results/doublets_info/)
+- [Leiden clusters](exp_results/leiden_clusters/)
+
+---
 
 ## Authors
 
