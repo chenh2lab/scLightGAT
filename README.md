@@ -27,10 +27,11 @@ pip install -e .
 
 ![Pipeline Overview](docs/figures/overall.png)
 
-**Figure 1. Overview of the scLightGAT framework.**  
-**(a)** *Feature compression* via C-DVAE …  
-**(b)** *Initial cell-type estimation* …  
-**(c)** *Prediction refinement* …
+**Figure 1.** Overview of the scLightGAT framework.  
+**(a)** *Feature compression* via C-DVAE: highly variable genes (Mₕᵥgₛ) are selected and combined with DGE marker genes (M_DGE), then passed through a Contrastive Denoising VAE to produce low-dimensional latent embeddings Z; Z and M_DGE are concatenated to form the fused feature matrix F.  
+**(b)** *Initial cell-type estimation* with LightGBM: the fused features F are fed into a gradient-boosted decision tree classifier, yielding per-cell logits and class probabilities from which initial predictions ŷ_LGBM are obtained via argmax.  
+**(c)** *Prediction refinement* via a two-layer Graph Attention Network: a single-cell graph (SCG) built from Harmony embeddings, UMAP coordinates, and Leiden labels is input to two GATConv layers to refine ŷ_LGBM and produce the final labels ŷ_GAT.
+
 ---
 
 ## Quick Start
