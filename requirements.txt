@@ -1,0 +1,33 @@
+# Core data structures & I/O
+anndata==0.10.7
+
+# Single-cell processing & integration
+scanpy==1.10.1
+scvi-tools==1.1.2
+scrublet==0.2.3
+harmonypy==0.0.9
+
+# Dimensionality reduction & clustering
+umap-learn==0.5.6
+leidenalg==0.10.2
+
+# Gradient-boosted classification
+lightgbm>=3.0
+
+# PyTorch & PyTorch Lightning
+torch==2.3.0
+pytorch-lightning==2.2.4
+torchmetrics==1.4.0
+
+# Graph neural networks
+torch-geometric>=2.4.0
+
+# Numerical computing & general ML
+numpy>=1.26.4
+pandas>=2.1.4
+scikit-learn>=1.2.0
+scipy==1.11.4
+networkx>=3.0
+
+# Visualization
+matplotlib>=3.7
