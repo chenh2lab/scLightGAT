@@ -35,7 +35,12 @@ pip install -e .
 ---
 
 ## Quick Start
-
+### 🔽 Download Dataset
+👉 [Download from Google Drive](https://drive.google.com/file/d/1JMtC6XfTPpjF7TceN-A9UwIBAlNWnze9/view?usp=drive_link)
+Alternatively, use the download script:
+```bash
+pip install gdown
+bash download_data.sh
 ### 🏋️ Training
 
 ```python
