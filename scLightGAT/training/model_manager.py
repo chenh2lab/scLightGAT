@@ -625,19 +625,21 @@ class CellTypeAnnotator:
         
         # Get unique classes
         if encoder is not None:
-            unique_classes = encoder.inverse_transform(np.unique(lightgbm_preds))
+            # unique_classes = encoder.inverse_transform(np.unique(lightgbm_preds))
+            all_classes = encoder.classes_
+            n_classes = len(all_classes)
         else:
             raise ValueError("Encoder is required for GAT refinement")
         
         # Initialize and train GAT
-        self.init_gat(in_channels=gat_data.x.shape[1], out_channels=len(unique_classes))
+        self.init_gat(in_channels=gat_data.x.shape[1], out_channels=n_classes)
         losses = self.train_gat(gat_data, lightgbm_preds, num_epochs=self.gat_epochs)
         
         # Evaluate and get refined predictions
-        pred_np, accuracy = self.evaluate_gat(gat_data, lightgbm_preds, unique_classes)
+        pred_np, accuracy = self.evaluate_gat(gat_data, lightgbm_preds, all_classes)
         
         # Store refined predictions
-        adata_test_dge.obs['GAT_pred'] = unique_classes[pred_np]
+        adata_test_dge.obs['GAT_pred'] = all_classes[pred_np]
         
         logger.info(f"Refinement completed with accuracy: {accuracy:.4f}")
         
