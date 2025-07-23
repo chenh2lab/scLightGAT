@@ -1,0 +1,317 @@
+dslab_lcy@chenh2-tyna:/Group16T/common/lcy/dslab_lcy/GitRepo/scLightGAT$ python test.py
+2025-07-22 20:30:59 - INFO - scLightGAT.pipeline - [TRAIN MODE] Starting training pipeline
+2025-07-22 20:30:59 - INFO - scLightGAT.pipeline - Train data: ./data/train.h5ad
+2025-07-22 20:30:59 - INFO - scLightGAT.pipeline - Test data: ./data/human_lung_fixed.h5ad
+2025-07-22 20:30:59 - INFO - scLightGAT.pipeline - Output dir: /Group16T/common/lcy/dslab_lcy/GitRepo/scLightGAT/results
+2025-07-22 20:30:59 - INFO - scLightGAT.pipeline - Model save dir: /Group16T/common/lcy/dslab_lcy/GitRepo/scLightGAT/mod
+els
+2025-07-22 20:30:59 - INFO - scLightGAT.pipeline - Train DVAE: True, Use GAT: True, DVAE Epochs: 5, GAT Epochs: 300
+2025-07-22 20:30:59 - INFO - scLightGAT.pipeline - Hierarchical mode: False
+2025-07-22 20:31:40 - INFO - scLightGAT.training.model_manager - CellTypeAnnotator initialized on device: cuda
+2025-07-22 20:31:40 - INFO - scLightGAT.training.model_manager - DVAE enabled: True, HVG enabled: True
+2025-07-22 20:31:40 - INFO - scLightGAT.training.model_manager - Hierarchical classification: False
+2025-07-22 20:31:40 - INFO - scLightGAT.training.model_manager - Starting complete annotation pipeline
+2025-07-22 20:31:40 - INFO - scLightGAT.training.model_manager - Starting feature extraction
+2025-07-22 20:31:40 - INFO - scLightGAT.preprocess.prediction_preprocess - 💾Preparing data for all models
+2025-07-22 20:31:44 - INFO - scLightGAT.preprocess.prediction_preprocess - ⏰Preparing DGEs data
+2025-07-22 20:31:44 - INFO - scLightGAT.preprocess.prediction_preprocess - Performing feature selection using Celltype_t
+raining
+2025-07-22 20:32:07 - INFO - scLightGAT.preprocess.prediction_preprocess - Generating feature list with top 3000 feature
+s
+2025-07-22 20:32:07 - INFO - scLightGAT.preprocess.prediction_preprocess - 🧬Number of common DGEs: 862🧬
+2025-07-22 20:32:14 - INFO - scLightGAT.preprocess.prediction_preprocess - Final shape of adata_train_dge: (158681, 862)
+2025-07-22 20:32:14 - INFO - scLightGAT.preprocess.prediction_preprocess - Final shape of adata_test_dge: (114396, 862)
+2025-07-22 20:32:14 - INFO - scLightGAT.preprocess.prediction_preprocess - ⏰Preparing HVG data
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/scanpy/preprocessing/_highly_variable_genes.
+py:72: UserWarning: `flavor='seurat_v3'` expects raw count data, but non-integers were found.
+  warnings.warn(
+2025-07-22 20:32:25 - INFO - scLightGAT.preprocess.prediction_preprocess - 🧬Number of common HVGs: 2988🧬
+2025-07-22 20:32:35 - INFO - scLightGAT.preprocess.prediction_preprocess - Final shape of adata_train_hvg: (158681, 2988
+)
+2025-07-22 20:32:35 - INFO - scLightGAT.preprocess.prediction_preprocess - Final shape of adata_test_hvg: (114396, 2988)
+2025-07-22 20:32:35 - INFO - scLightGAT.preprocess.prediction_preprocess - 💾Preparing data for LightGBM
+2025-07-22 20:32:35 - INFO - scLightGAT.preprocess.prediction_preprocess - Transforming AnnData object for Celltype_trai
+ning
+2025-07-22 20:32:36 - INFO - scLightGAT.preprocess.prediction_preprocess - 💾Preparing data for DVAE
+2025-07-22 20:32:36 - INFO - scLightGAT.preprocess.prediction_preprocess - Transforming AnnData object for Celltype_trai
+ning
+2025-07-22 20:32:38 - INFO - scLightGAT.preprocess.prediction_preprocess - Balancing classes with target count 10000
+2025-07-22 20:32:38 - INFO - scLightGAT.preprocess.prediction_preprocess - Original class counts:
+encoding
+5     36458
+7     32291
+1     24899
+4     12856
+6     10649
+10     9373
+0      6964
+2      6274
+9      5294
+11     4583
+3      4470
+8      4138
+12      432
+Name: count, dtype: int64
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/sklearn/base.py:484: FutureWarning: `BaseEst
+imator._check_n_features` is deprecated in 1.6 and will be removed in 1.7. Use `sklearn.utils.validation._check_n_featur
+es` instead.
+  warnings.warn(
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/sklearn/base.py:493: FutureWarning: `BaseEst
+imator._check_feature_names` is deprecated in 1.6 and will be removed in 1.7. Use `sklearn.utils.validation._check_featu
+re_names` instead.
+  warnings.warn(
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/sklearn/base.py:484: FutureWarning: `BaseEst
+imator._check_n_features` is deprecated in 1.6 and will be removed in 1.7. Use `sklearn.utils.validation._check_n_featur
+es` instead.
+  warnings.warn(
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/sklearn/base.py:493: FutureWarning: `BaseEst
+imator._check_feature_names` is deprecated in 1.6 and will be removed in 1.7. Use `sklearn.utils.validation._check_featu
+re_names` instead.
+  warnings.warn(
+2025-07-22 20:32:41 - INFO - scLightGAT.preprocess.prediction_preprocess - 🔧Resampled class counts:
+encoding
+0     10000
+1     10000
+2     10000
+3     10000
+4     10000
+5     10000
+6     10000
+7     10000
+8     10000
+9     10000
+10    10000
+11    10000
+12    10000
+Name: count, dtype: int64
+2025-07-22 20:32:41 - INFO - scLightGAT.training.model_manager - Extracting features with DVAE
+2025-07-22 20:32:41 - INFO - scLightGAT.models.dvae_model - Initializing DVAE on device: cuda
+2025-07-22 20:32:42 - INFO - scLightGAT.models.dvae_model - DVAE initialized with:
+2025-07-22 20:32:42 - INFO - scLightGAT.models.dvae_model - Input dimension: 2988
+2025-07-22 20:32:42 - INFO - scLightGAT.models.dvae_model - Latent dimension: 300
+2025-07-22 20:32:42 - INFO - scLightGAT.models.dvae_model - Cluster weight: 1
+2025-07-22 20:32:42 - INFO - scLightGAT.models.dvae_model - Temperature: 0.01
+2025-07-22 20:32:42 - INFO - scLightGAT.training.model_manager - DVAE initialized with input_dim: 2988
+2025-07-22 20:32:42 - INFO - scLightGAT.training.model_manager - Starting DVAE training with contrastive learning
+Epoch 1/5:   0%|                                                                               | 0/1240 [00:00<?, ?it/s]
+/Group16T/common/lcy/dslab_lcy/GitRepo/scLightGAT/scLightGAT/training/model_manager.py:223: FutureWarning: Series.__geti
+tem__ treating keys as positions is deprecated. In a future version, integer keys will always be treated as labels (cons
+istent with DataFrame behavior). To access a value by position, use `ser.iloc[pos]`
+  batch_labels = torch.tensor(
+Epoch 1/5: 100%|████████████████████████████████████████████████████████████████████| 1240/1240 [00:26<00:00, 47.51it/s]
+Epoch 2/5: 100%|████████████████████████████████████████████████████████████████████| 1240/1240 [00:23<00:00, 51.99it/s]
+Epoch 3/5: 100%|████████████████████████████████████████████████████████████████████| 1240/1240 [00:22<00:00, 54.35it/s]
+Epoch 4/5: 100%|████████████████████████████████████████████████████████████████████| 1240/1240 [00:22<00:00, 55.71it/s]
+Epoch 5/5: 100%|████████████████████████████████████████████████████████████████████| 1240/1240 [00:23<00:00, 52.99it/s]
+2025-07-22 20:34:40 - INFO - scLightGAT.training.model_manager - Epoch [5/5], Loss: 0.2847, LR: 0.000001
+2025-07-22 20:34:41 - INFO - scLightGAT.training.model_manager - DVAE training completed
+2025-07-22 20:34:42 - INFO - scLightGAT.training.model_manager - Transforming AnnData for Celltype_training
+2025-07-22 20:34:43 - INFO - scLightGAT.training.model_manager - Transforming AnnData for Celltype_training
+2025-07-22 20:34:45 - INFO - scLightGAT.preprocess.prediction_preprocess - Balancing classes with target count 10000
+2025-07-22 20:34:45 - INFO - scLightGAT.preprocess.prediction_preprocess - Original class counts:
+encoding
+5     36458
+7     32291
+1     24899
+4     12856
+6     10649
+10     9373
+0      6964
+2      6274
+9      5294
+11     4583
+3      4470
+8      4138
+12      432
+Name: count, dtype: int64
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/sklearn/base.py:484: FutureWarning: `BaseEst
+imator._check_n_features` is deprecated in 1.6 and will be removed in 1.7. Use `sklearn.utils.validation._check_n_featur
+es` instead.
+  warnings.warn(
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/sklearn/base.py:493: FutureWarning: `BaseEst
+imator._check_feature_names` is deprecated in 1.6 and will be removed in 1.7. Use `sklearn.utils.validation._check_featu
+re_names` instead.
+  warnings.warn(
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/sklearn/base.py:484: FutureWarning: `BaseEst
+imator._check_n_features` is deprecated in 1.6 and will be removed in 1.7. Use `sklearn.utils.validation._check_n_featur
+es` instead.
+  warnings.warn(
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/sklearn/base.py:493: FutureWarning: `BaseEst
+imator._check_feature_names` is deprecated in 1.6 and will be removed in 1.7. Use `sklearn.utils.validation._check_featu
+re_names` instead.
+  warnings.warn(
+2025-07-22 20:34:48 - INFO - scLightGAT.preprocess.prediction_preprocess - 🔧Resampled class counts:
+encoding
+0     10000
+1     10000
+2     10000
+3     10000
+4     10000
+5     10000
+6     10000
+7     10000
+8     10000
+9     10000
+10    10000
+11    10000
+12    10000
+Name: count, dtype: int64
+2025-07-22 20:34:48 - INFO - scLightGAT.training.model_manager - Feature extraction completed
+2025-07-22 20:34:48 - INFO - scLightGAT.training.model_manager - Starting classification
+2025-07-22 20:34:48 - INFO - scLightGAT.training.model_manager - Starting LightGBM training
+2025-07-22 20:34:48 - INFO - scLightGAT.models.lightgbm_model - Using default parameters
+2025-07-22 20:34:48 - INFO - scLightGAT.models.lightgbm_model - Best parameters: {'max_depth': 10, 'num_leaves': 77, 'le
+arning_rate': 0.2106, 'n_estimators': 150, 'min_data_in_leaf': 64, 'feature_fraction': 0.7, 'bagging_fraction': 0.7, 'ba
+gging_freq': 5, 'reg_alpha': 0.1, 'reg_lambda': 0.1}
+2025-07-22 20:34:49 - INFO - scLightGAT.models.lightgbm_model - Training LightGBM model with 91000 samples, 1162 feature
+s
+2025-07-22 20:36:13 - INFO - scLightGAT.models.lightgbm_model - Test accuracy: 0.9829
+2025-07-22 20:36:13 - INFO - scLightGAT.models.lightgbm_model - Classification report:
+              precision    recall  f1-score   support
+
+           0       1.00      0.99      0.99      3000
+           1       0.98      0.95      0.96      3000
+           2       0.94      0.98      0.96      3000
+           3       0.96      0.98      0.97      3000
+           4       1.00      1.00      1.00      3000
+           5       1.00      1.00      1.00      3000
+           6       1.00      1.00      1.00      3000
+           7       0.97      0.94      0.96      3000
+           8       1.00      1.00      1.00      3000
+           9       0.95      0.97      0.96      3000
+          10       1.00      0.99      0.99      3000
+          11       0.99      1.00      0.99      3000
+          12       1.00      1.00      1.00      3000
+
+    accuracy                           0.98     39000
+   macro avg       0.98      0.98      0.98     39000
+weighted avg       0.98      0.98      0.98     39000
+
+2025-07-22 20:36:15 - INFO - scLightGAT.models.lightgbm_model - Confusion matrix saved to lightgbm_confusion_matrix.png
+2025-07-22 20:36:15 - INFO - scLightGAT.training.model_manager - LightGBM training completed
+2025-07-22 20:36:16 - INFO - scLightGAT.training.model_manager - Classification completed
+2025-07-22 20:36:16 - INFO - scLightGAT.training.model_manager - Starting refinement with GAT
+2025-07-22 20:36:16 - INFO - scLightGAT.preprocess.preprocess - Starting visualization process
+2025-07-22 20:36:16 - INFO - scLightGAT.preprocess.preprocess - Performing PCA (Default components are 50)
+2025-07-22 20:36:25 - INFO - scLightGAT.preprocess.preprocess - Computing neighbors
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/numba/np/ufunc/parallel.py:371: NumbaWarning
+: The TBB threading layer requires TBB version 2021 update 6 or later i.e., TBB_INTERFACE_VERSION >= 12060. Found TBB_IN
+TERFACE_VERSION = 12050. The TBB threading layer is disabled.
+  warnings.warn(problem)
+2025-07-22 20:37:05 - INFO - scLightGAT.preprocess.preprocess - Computing UMAP
+2025-07-22 20:38:19 - INFO - scLightGAT.preprocess.preprocess - Performing Leiden clustering
+/Group16T/common/lcy/dslab_lcy/GitRepo/scLightGAT/scLightGAT/preprocess/preprocess.py:103: FutureWarning: In the future,
+ the default backend for leiden will be igraph instead of leidenalg.
+
+ To achieve the future defaults please pass: flavor="igraph" and n_iterations=2.  directed must also be False to work wi
+th igraph's implementation.
+  sc.tl.leiden(adata, resolution=res)
+2025-07-22 20:41:01 - INFO - scLightGAT.preprocess.preprocess - ✅Visualization process completed
+2025-07-22 20:41:01 - INFO - scLightGAT.training.model_manager - Preparing data for GAT
+2025-07-22 20:41:18 - INFO - scLightGAT.training.model_manager - GAT model initialized with 878 in_channels and 13 out_c
+hannels
+2025-07-22 20:41:18 - INFO - scLightGAT.training.model_manager - Starting GAT training
+Training GAT:   3%|█▋                                                      | 9/300 [00:06<02:51,  1.70it/s, loss=0.6354]
+2025-07-22 20:41:24 - INFO - scLightGAT.models.gat_model - Epoch [10/300], Loss: 0.6354
+Training GAT:   6%|███▍                                                   | 19/300 [00:11<02:45,  1.70it/s, loss=0.3624]
+2025-07-22 20:41:30 - INFO - scLightGAT.models.gat_model - Epoch [20/300], Loss: 0.3624
+Training GAT:  10%|█████▎                                                 | 29/300 [00:17<02:39,  1.70it/s, loss=0.2969]
+2025-07-22 20:41:35 - INFO - scLightGAT.models.gat_model - Epoch [30/300], Loss: 0.2969
+Training GAT:  13%|███████▏                                               | 39/300 [00:23<02:32,  1.71it/s, loss=0.2698]
+2025-07-22 20:41:41 - INFO - scLightGAT.models.gat_model - Epoch [40/300], Loss: 0.2698
+Training GAT:  16%|████████▉                                              | 49/300 [00:29<02:26,  1.71it/s, loss=0.2553]
+2025-07-22 20:41:47 - INFO - scLightGAT.models.gat_model - Epoch [50/300], Loss: 0.2553
+Training GAT:  20%|██████████▊                                            | 59/300 [00:35<02:20,  1.71it/s, loss=0.2438]
+2025-07-22 20:41:53 - INFO - scLightGAT.models.gat_model - Epoch [60/300], Loss: 0.2438
+Training GAT:  23%|████████████▋                                          | 69/300 [00:41<02:15,  1.70it/s, loss=0.2351]
+2025-07-22 20:41:59 - INFO - scLightGAT.models.gat_model - Epoch [70/300], Loss: 0.2351
+Training GAT:  26%|██████████████▍                                        | 79/300 [00:47<02:09,  1.70it/s, loss=0.2293]
+2025-07-22 20:42:05 - INFO - scLightGAT.models.gat_model - Epoch [80/300], Loss: 0.2293
+Training GAT:  30%|████████████████▎                                      | 89/300 [00:52<02:03,  1.70it/s, loss=0.2235]
+2025-07-22 20:42:11 - INFO - scLightGAT.models.gat_model - Epoch [90/300], Loss: 0.2235
+Training GAT:  33%|██████████████████▏                                    | 99/300 [00:58<01:58,  1.69it/s, loss=0.2185]
+2025-07-22 20:42:17 - INFO - scLightGAT.models.gat_model - Epoch [100/300], Loss: 0.2185
+Training GAT:  36%|███████████████████▌                                  | 109/300 [01:04<01:52,  1.69it/s, loss=0.2139]
+2025-07-22 20:42:22 - INFO - scLightGAT.models.gat_model - Epoch [110/300], Loss: 0.2139
+Training GAT:  40%|█████████████████████▍                                | 119/300 [01:10<01:46,  1.69it/s, loss=0.2094]
+2025-07-22 20:42:28 - INFO - scLightGAT.models.gat_model - Epoch [120/300], Loss: 0.2094
+Training GAT:  43%|███████████████████████▏                              | 129/300 [01:16<01:41,  1.69it/s, loss=0.2061]
+2025-07-22 20:42:34 - INFO - scLightGAT.models.gat_model - Epoch [130/300], Loss: 0.2061
+Training GAT:  46%|█████████████████████████                             | 139/300 [01:22<01:35,  1.69it/s, loss=0.2025]
+2025-07-22 20:42:40 - INFO - scLightGAT.models.gat_model - Epoch [140/300], Loss: 0.2025
+Training GAT:  50%|██████████████████████████▊                           | 149/300 [01:28<01:29,  1.69it/s, loss=0.1993]
+2025-07-22 20:42:46 - INFO - scLightGAT.models.gat_model - Epoch [150/300], Loss: 0.1993
+Training GAT:  53%|████████████████████████████▌                         | 159/300 [01:34<01:23,  1.69it/s, loss=0.1964]
+2025-07-22 20:42:52 - INFO - scLightGAT.models.gat_model - Epoch [160/300], Loss: 0.1964
+Training GAT:  56%|██████████████████████████████▍                       | 169/300 [01:40<01:17,  1.68it/s, loss=0.1936]
+2025-07-22 20:42:58 - INFO - scLightGAT.models.gat_model - Epoch [170/300], Loss: 0.1936
+Training GAT:  60%|████████████████████████████████▏                     | 179/300 [01:46<01:12,  1.67it/s, loss=0.1909]
+2025-07-22 20:43:04 - INFO - scLightGAT.models.gat_model - Epoch [180/300], Loss: 0.1909
+Training GAT:  63%|██████████████████████████████████                    | 189/300 [01:52<01:06,  1.68it/s, loss=0.1887]
+2025-07-22 20:43:10 - INFO - scLightGAT.models.gat_model - Epoch [190/300], Loss: 0.1887
+Training GAT:  66%|███████████████████████████████████▊                  | 199/300 [01:58<01:00,  1.68it/s, loss=0.1863]
+2025-07-22 20:43:16 - INFO - scLightGAT.models.gat_model - Epoch [200/300], Loss: 0.1863
+Training GAT:  70%|█████████████████████████████████████▌                | 209/300 [02:04<00:54,  1.67it/s, loss=0.1840]
+2025-07-22 20:43:22 - INFO - scLightGAT.models.gat_model - Epoch [210/300], Loss: 0.1840
+Training GAT:  73%|███████████████████████████████████████▍              | 219/300 [02:10<00:48,  1.68it/s, loss=0.1818]
+2025-07-22 20:43:28 - INFO - scLightGAT.models.gat_model - Epoch [220/300], Loss: 0.1818
+Training GAT:  76%|█████████████████████████████████████████▏            | 229/300 [02:16<00:42,  1.68it/s, loss=0.1801]
+2025-07-22 20:43:34 - INFO - scLightGAT.models.gat_model - Epoch [230/300], Loss: 0.1801
+Training GAT:  80%|███████████████████████████████████████████           | 239/300 [02:22<00:36,  1.68it/s, loss=0.1778]
+2025-07-22 20:43:40 - INFO - scLightGAT.models.gat_model - Epoch [240/300], Loss: 0.1778
+Training GAT:  83%|████████████████████████████████████████████▊         | 249/300 [02:28<00:30,  1.68it/s, loss=0.1766]
+2025-07-22 20:43:46 - INFO - scLightGAT.models.gat_model - Epoch [250/300], Loss: 0.1766
+Training GAT:  86%|██████████████████████████████████████████████▌       | 259/300 [02:34<00:24,  1.67it/s, loss=0.1744]
+2025-07-22 20:43:52 - INFO - scLightGAT.models.gat_model - Epoch [260/300], Loss: 0.1744
+Training GAT:  90%|████████████████████████████████████████████████▍     | 269/300 [02:40<00:18,  1.67it/s, loss=0.1726]
+2025-07-22 20:43:58 - INFO - scLightGAT.models.gat_model - Epoch [270/300], Loss: 0.1726
+Training GAT:  93%|██████████████████████████████████████████████████▏   | 279/300 [02:46<00:12,  1.67it/s, loss=0.1710]
+2025-07-22 20:44:04 - INFO - scLightGAT.models.gat_model - Epoch [280/300], Loss: 0.1710
+Training GAT:  96%|████████████████████████████████████████████████████  | 289/300 [02:52<00:06,  1.67it/s, loss=0.1692]
+2025-07-22 20:44:10 - INFO - scLightGAT.models.gat_model - Epoch [290/300], Loss: 0.1692
+Training GAT: 100%|█████████████████████████████████████████████████████▊| 299/300 [02:57<00:00,  1.67it/s, loss=0.1680]
+2025-07-22 20:44:16 - INFO - scLightGAT.models.gat_model - Epoch [300/300], Loss: 0.1680
+Training GAT: 100%|██████████████████████████████████████████████████████| 300/300 [02:58<00:00,  1.69it/s, loss=0.1680]
+2025-07-22 20:44:16 - INFO - scLightGAT.training.model_manager - GAT training completed
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1565: Und
+efinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_divisi
+on` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1565: Und
+efinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_divisi
+on` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+/Group16T/common/lcy/miniconda3/envs/scLightGAT/lib/python3.9/site-packages/sklearn/metrics/_classification.py:1565: Und
+efinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_divisi
+on` parameter to control this behavior.
+  _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+2025-07-22 20:44:16 - INFO - scLightGAT.models.gat_model - Accuracy: 0.9454
+2025-07-22 20:44:16 - INFO - scLightGAT.models.gat_model - Classification Report:
+2025-07-22 20:44:16 - INFO - scLightGAT.models.gat_model -                    precision    recall  f1-score   support
+
+          B cells       0.87      0.16      0.27        83
+      CD4+T cells       0.83      0.88      0.85      1687
+      CD8+T cells       0.00      0.00      0.00        45
+               DC       0.79      0.84      0.81      2065
+Endothelial cells       0.99      0.90      0.94     12363
+ Epithelial cells       0.96      1.00      0.98     36107
+      Fibroblasts       0.88      0.97      0.92      3951
+      Macrophages       0.96      0.98      0.97     41988
+       Mast cells       0.83      0.47      0.60      3515
+        Monocytes       0.81      0.80      0.81      4006
+         NK cells       0.94      0.95      0.94      7702
+     Plasma cells       0.95      0.78      0.86       823
+              pDC       0.84      0.61      0.70        61
+
+         accuracy                           0.95    114396
+        macro avg       0.82      0.72      0.74    114396
+     weighted avg       0.94      0.95      0.94    114396
+
+2025-07-22 20:44:16 - INFO - scLightGAT.training.model_manager - Refinement completed with accuracy: 0.9454
+2025-07-22 20:44:16 - INFO - scLightGAT.training.model_manager - Creating UMAP visualization for cell type predictions
+WARNING: saving figure to file umap_scLightGAT.png
+2025-07-22 20:44:19 - INFO - scLightGAT.visualization.visualization - Creating training loss plot for GAT
+2025-07-22 20:44:19 - INFO - scLightGAT.training.model_manager - Annotation pipeline completed
+2025-07-22 20:44:41 - INFO - scLightGAT.pipeline - [TRAIN MODE] Training pipeline completed
+dslab_lcy@chenh2-tyna:/Group16T/common/lcy/dslab_lcy/GitRepo/scLightGAT$ tmux capture-pane -pS -500 > log_lungFix3.txt
+
