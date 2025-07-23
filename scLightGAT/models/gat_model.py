@@ -152,7 +152,7 @@ class GATModel(torch.nn.Module):
         lightgbm_preds_np = np.array(lightgbm_preds).astype(np.int64)
 
         accuracy = accuracy_score(lightgbm_preds_np, pred_np)
-        report = classification_report(lightgbm_preds_np, pred_np, target_names=lightgbm_classes)
+        report = classification_report(lightgbm_preds_np, pred_np, labels=list(range(len(lightgbm_classes))),target_names=lightgbm_classes)
 
         logger.info(f"Accuracy: {accuracy:.4f}")
         logger.info("Classification Report:")
