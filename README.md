@@ -1,7 +1,7 @@
 # scLightGAT: A LightGBM-based Framework Integrating C-DVAE and GATs for Robust Single-cell RNA-seq Cell Type Annotation
 
 ## Data
-📁 [**Data (Google Drive)**](https://drive.google.com/drive/folders/1CDj-lMrybfSmMprmgd2GFIARXL0J1ynZ?usp=sharing)
+📁 [**Data**](https://drive.google.com/drive/folders/1CDj-lMrybfSmMprmgd2GFIARXL0J1ynZ?usp=sharing)
 
 All processed single-cell training and testing datasets (in `.h5ad` format) used for reproducing scLightGAT results can be downloaded from the link above.  
 Please ensure sufficient storage before downloading large files.
