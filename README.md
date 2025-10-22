@@ -1,5 +1,14 @@
 # scLightGAT: A LightGBM-based Framework Integrating C-DVAE and GATs for Robust Single-cell RNA-seq Cell Type Annotation
 
+## Data
+📁 [**Data (Google Drive)**](https://drive.google.com/drive/folders/1CDj-lMrybfSmMprmgd2GFIARXL0J1ynZ?usp=sharing)
+
+All processed single-cell training and testing datasets (in `.h5ad` format) used for reproducing scLightGAT results can be downloaded from the link above.  
+Please ensure sufficient storage before downloading large files.
+
+---
+
+
 ## Overview
 We propose **scLightGAT**, a Python-native, biologically informed, and computationally scalable framework for cell-type annotation. scLightGAT combines machine learning and deep learning techniques through a three-stage architecture:
 1. **C-DVAE**: Contrastive Denoising Variational Autoencoder extracts low-dimensional latent features from highly variable genes (HVGs).
