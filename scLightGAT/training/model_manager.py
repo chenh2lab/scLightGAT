@@ -739,7 +739,7 @@ class CellTypeAnnotator:
             index=adata_test_sub.obs.index,
             dtype=str
         )
-        adata_test_sub.obs['subtype_pred_final'] = pd.Series(
+        adata_test_sub.obs['scLightGAT_prediction(subtype)'] = pd.Series(
             adata_test_sub.obs['GAT_pred'].values,
             index=adata_test_sub.obs.index,
             dtype=str
@@ -845,7 +845,7 @@ class CellTypeAnnotator:
                 # Update predictions
                 mask_indices = adata_test_sub.obs.index[combined_mask]
                 final_predictions = encoder.inverse_transform(final_preds)
-                adata_test_sub.obs.loc[mask_indices, 'subtype_pred_final'] = final_predictions
+                adata_test_sub.obs.loc[mask_indices, 'scLightGAT_prediction(subtype)'] = final_predictions
                 
                 # Update prediction paths
                 for idx, pred in zip(mask_indices, final_predictions):
@@ -863,7 +863,7 @@ class CellTypeAnnotator:
                 )
         else:
             # Use LightGBM predictions directly
-            adata_test_sub.obs['subtype_pred_final'] = adata_test_sub.obs['subtype_pred_lightgbm']
+            adata_test_sub.obs['scLightGAT_prediction(subtype)'] = adata_test_sub.obs['subtype_pred_lightgbm']
             
             # Update prediction paths
             update_mask = adata_test_sub.obs['subtype_pred_lightgbm'] != adata_test_sub.obs['GAT_pred']
