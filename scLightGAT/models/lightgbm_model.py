@@ -147,7 +147,8 @@ class LightGBMModel:
         # logger.debug(f'Internal Classification report:\n{report}')
 
         # Plot confusion matrix
-        self._plot_confusion_matrix(y_test, y_test_pred, class_names, group_name)
+        # self._plot_confusion_matrix(y_test, y_test_pred, class_names, group_name)  # Disabled per user request
+
         
         return test_accuracy
 

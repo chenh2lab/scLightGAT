@@ -363,15 +363,7 @@ def create_all_visualizations(adata, prediction_columns, group_mappings=None, dv
     
     # Create prediction comparison plot
     plot_prediction_comparison(adata, prediction_columns)
-    
-    # Create confusion matrix
-    if 'Manual Annotation' in adata.obs and 'scLightGAT_rawpred' in adata.obs:
-        plot_confusion_matrix(
-            adata.obs['Manual Annotation'],
-            adata.obs['scLightGAT_rawpred'],
-            class_names=adata.obs['Manual Annotation'].unique(),
-            title="LightGBM Prediction Confusion Matrix"
-        )
+
     
     # Create group accuracy plot if group mappings are provided
     if group_mappings is not None:

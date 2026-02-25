@@ -740,12 +740,10 @@ class CellTypeAnnotator:
         adata_test_dge.obsm['LightGBM_probs'] = lightgbm_probs
         
         # Calculate and log test set accuracy (independent test set)
-        # Check for Ground Truth column first, then Celltype_training for backward compatibility
-        gt_col = 'Ground Truth' if 'Ground Truth' in adata_test_dge.obs.columns else ('Celltype_training' if 'Celltype_training' in adata_test_dge.obs.columns else None)
+        # Check for Manual Annotation first, then Ground Truth, then Celltype_training
+        gt_col = 'Manual Annotation' if 'Manual Annotation' in adata_test_dge.obs.columns else ('Ground Truth' if 'Ground Truth' in adata_test_dge.obs.columns else ('Celltype_training' if 'Celltype_training' in adata_test_dge.obs.columns else None))
         if gt_col is not None:
-            from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-            import matplotlib.pyplot as plt
-            import seaborn as sns
+            from sklearn.metrics import accuracy_score, classification_report
             
             y_true = adata_test_dge.obs[gt_col].values
             y_pred = lightgbm_preds
@@ -758,48 +756,6 @@ class CellTypeAnnotator:
             filtered_labels = [l for l in sorted(set(y_true) | set(y_pred)) if l in unique_gt]
             report = classification_report(y_true, y_pred, labels=filtered_labels, zero_division=0)
             logger.info(f"[INDEPENDENT TEST SET] Classification Report:\n{report}")
-            
-            # Plot confusion matrix for independent test set
-            # Only include classes that have at least one ground truth sample
-            gt_labels = sorted([l for l in set(y_true) if sum(y_true == l) > 0])
-            pred_labels = sorted(set(y_pred))
-            # Use labels that exist in ground truth (filter out GT=0)
-            labels = sorted(set(gt_labels) | (set(pred_labels) & set(gt_labels)))
-            if not labels:
-                labels = sorted(set(y_true) | set(y_pred))
-            
-            conf_matrix = confusion_matrix(y_true, y_pred, labels=labels)
-            
-            # Create row-normalized version for better color scaling
-            row_sums = conf_matrix.sum(axis=1, keepdims=True)
-            row_sums[row_sums == 0] = 1  # Avoid division by zero
-            conf_matrix_normalized = conf_matrix / row_sums
-            
-            # Calculate figure size based on number of classes
-            n_labels = len(labels)
-            fig_size = max(10, n_labels * 0.8)
-            plt.figure(figsize=(fig_size, fig_size * 0.9))
-            
-            # Use row-normalized colors but show actual counts
-            sns.heatmap(conf_matrix, 
-                        annot=True,
-                        fmt='g',
-                        cmap="Blues",
-                        xticklabels=labels,
-                        yticklabels=labels,
-                        vmin=0,
-                        vmax=np.max(conf_matrix),  # Auto-scale to max count
-                        cbar_kws={'label': 'Count'})
-            
-            plt.xticks(rotation=45, ha='right', fontsize=9)
-            plt.yticks(rotation=0, ha='right', fontsize=9)
-            plt.xlabel('LightGBM Prediction', fontsize=11, fontweight="bold")
-            plt.ylabel('Ground Truth', fontsize=11, fontweight="bold")
-            plt.title('LightGBM Confusion Matrix (Independent Test Set)', fontsize=13, fontweight="bold")
-            plt.tight_layout()
-            plt.savefig('lightgbm_test_confusion_matrix.png', dpi=300, bbox_inches='tight')
-            plt.close()
-            logger.info("Independent test set confusion matrix saved to lightgbm_test_confusion_matrix.png")
         
         logger.info("Classification completed")
         
@@ -857,6 +813,57 @@ class CellTypeAnnotator:
         
         logger.info(f"Refinement completed with accuracy: {accuracy:.4f}")
         
+        # Plot confusion matrix for GAT refinement on independent test set
+        gt_col = 'Manual Annotation' if 'Manual Annotation' in adata_test_dge.obs.columns else ('Ground Truth' if 'Ground Truth' in adata_test_dge.obs.columns else ('Celltype_training' if 'Celltype_training' in adata_test_dge.obs.columns else None))
+        if gt_col is not None:
+            from sklearn.metrics import confusion_matrix
+            import matplotlib.pyplot as plt
+            import seaborn as sns
+            
+            y_true = adata_test_dge.obs[gt_col].values
+            y_pred = adata_test_dge.obs['scLightGAT_pred'].values
+            
+            # Only include classes that have at least one ground truth sample
+            gt_labels = sorted([l for l in set(y_true) if sum(y_true == l) > 0])
+            pred_labels = sorted(set(y_pred))
+            # Use labels that exist in ground truth (filter out GT=0)
+            labels = sorted(set(gt_labels) | (set(pred_labels) & set(gt_labels)))
+            if not labels:
+                labels = sorted(set(y_true) | set(y_pred))
+            
+            conf_matrix = confusion_matrix(y_true, y_pred, labels=labels)
+            
+            # Create row-normalized version for better color scaling
+            row_sums = conf_matrix.sum(axis=1, keepdims=True)
+            row_sums[row_sums == 0] = 1  # Avoid division by zero
+            conf_matrix_normalized = conf_matrix / row_sums
+            
+            # Calculate figure size based on number of classes
+            n_labels = len(labels)
+            fig_size = max(10, n_labels * 0.8)
+            plt.figure(figsize=(fig_size, fig_size * 0.9))
+            
+            # Use row-normalized colors but show actual counts
+            sns.heatmap(conf_matrix, 
+                        annot=True,
+                        fmt='g',
+                        cmap="Blues",
+                        xticklabels=labels,
+                        yticklabels=labels,
+                        vmin=0,
+                        vmax=np.max(conf_matrix),  # Auto-scale to max count
+                        cbar_kws={'label': 'Count'})
+            
+            plt.xticks(rotation=45, ha='right', fontsize=9)
+            plt.yticks(rotation=0, ha='right', fontsize=9)
+            plt.xlabel('scLightGAT Prediction', fontsize=11, fontweight="bold")
+            plt.ylabel('Ground Truth', fontsize=11, fontweight="bold")
+            plt.title('scLightGAT Prediction Confusion Matrix', fontsize=13, fontweight="bold")
+            plt.tight_layout()
+            plt.savefig('sclightgat_test_confusion_matrix.png', dpi=300, bbox_inches='tight')
+            plt.close()
+            logger.info("Independent test set confusion matrix saved to sclightgat_test_confusion_matrix.png")
+            
         return adata_test_dge, losses
     
     def run_subtype_prediction(self, adata_train: AnnData, 
