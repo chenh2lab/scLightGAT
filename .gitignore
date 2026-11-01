@@ -1,16 +1,10 @@
-.basilisk_cache
-caf.related/
-docker/
-scLightGAT.backup/
-scLightGAT_data/
-# ignore experiment outputs
-sclightgat_exp_results/
-thesis.exps_results/
-
+.cache/
+result/
 __pycache__/
-*.pyc
-*.log
-*.png
-results/
-saved_models/
-docs/
+*.py[cod]
+scLightGAT_data*/
+plots/
+.DS_Store
+benchmark/scGPT/models/scGPT_human/best_model.pt
+temp/
+*_cmd.sh
